@@ -179,7 +179,6 @@ class XGBoost:
         self.gs_cross_entry = ttk.Entry(parameter_optimization_frame, textvariable=self.gs_cross_val_var, width=8, state=tk.DISABLED)
         self.gs_cross_entry.grid(column=1, row=2, pady=2)
 
-
     def model_parameters(self,model_frame):
         model_parameters_frame = ttk.LabelFrame(model_frame, text="Model Parameters")
         model_parameters_frame.grid(column=1, row=0, rowspan=3, columnspan=2)
@@ -190,10 +189,42 @@ class XGBoost:
         
         ttk.Label(model_parameters_frame, text="Current").grid(column=1, row=0)
         ttk.Label(model_parameters_frame, text="----- Search Range -----").grid(column=2, row=0, columnspan=2)
-
+        
+        self.grid_option_var1 = tk.IntVar(value=0)
+        self.grid_option_var2 = tk.IntVar(value=0)
+        self.grid_option_var3 = tk.IntVar(value=0)
+        self.grid_option_var4 = tk.IntVar(value=0)
+        self.grid_option_var5 = tk.IntVar(value=0)
+        self.grid_option_var6 = tk.IntVar(value=0)
+        self.grid_option_var7 = tk.IntVar(value=0)
+        self.grid_option_var8 = tk.IntVar(value=0)
+        self.grid_option_var9 = tk.IntVar(value=0)
+        self.grid_option_var10 = tk.IntVar(value=0)
+        
+        self.grid_option_cb1 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var1)
+        self.grid_option_cb1.grid(column=0,row=1)
+        self.grid_option_cb2 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var2)
+        self.grid_option_cb2.grid(column=0,row=2)
+        self.grid_option_cb3 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var3)
+        self.grid_option_cb3.grid(column=0,row=3)
+        self.grid_option_cb4 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var4)
+        self.grid_option_cb4.grid(column=0,row=4)
+        self.grid_option_cb5 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var5)
+        self.grid_option_cb5.grid(column=0,row=5)
+        self.grid_option_cb6 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var6)
+        self.grid_option_cb6.grid(column=0,row=6)
+        self.grid_option_cb7 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var7)
+        self.grid_option_cb7.grid(column=0,row=7)
+        self.grid_option_cb8 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var8)
+        self.grid_option_cb8.grid(column=0,row=8)
+        self.grid_option_cb9 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var9)
+        self.grid_option_cb9.grid(column=0,row=9)
+        self.grid_option_cb10 = tk.Checkbutton(model_parameters_frame, offvalue=0, onvalue=1,state=tk.DISABLED, variable=self.grid_option_var10)
+        self.grid_option_cb10.grid(column=0,row=10)
+        
         self.model_parameters_frame_options = [
             [
-                ttk.Label(model_parameters_frame, text=j+":").grid(column=0, row=i+1),
+                ttk.Label(model_parameters_frame, text=j+":").grid(column=1, row=i+1),
                 ttk.Entry(model_parameters_frame, textvariable=self.parameters[i], state=tk.NORMAL, width=9),
                 ttk.Entry(model_parameters_frame, textvariable=self.optimization_parameters[i][0], state=tk.DISABLED, width=9),
                 ttk.Entry(model_parameters_frame, textvariable=self.optimization_parameters[i][1], state=tk.DISABLED, width=9)
@@ -201,9 +232,9 @@ class XGBoost:
         ]
 
         for i, j in enumerate(self.model_parameters_frame_options):
-            j[1].grid(column=1, row=i+1, padx=2, pady=2, sticky=tk.W)
-            j[2].grid(column=2, row=i+1, padx=2, pady=2)
-            j[3].grid(column=3, row=i+1, padx=2, pady=2)
+            j[1].grid(column=2, row=i+1, padx=2, pady=2, sticky=tk.W)
+            j[2].grid(column=3, row=i+1, padx=2, pady=2)
+            j[3].grid(column=4, row=i+1, padx=2, pady=2)
 
     def test_model_frame(self):
         test_model_frame = ttk.LabelFrame(self.root, text="Test Frame")
@@ -233,6 +264,7 @@ class XGBoost:
         ttk.Button(test_model_main_frame, text="Actual vs Forecast Graph", command=self.vsGraph).grid(column=0, row=4, columnspan=3,sticky=tk.NW)
         ttk.Button(test_model_main_frame, text="Created Dataframe", command=self.showCreatedDataFrame).grid(column=0, row=5, columnspan=3,sticky=tk.NW)
         ttk.Button(test_model_main_frame, text="Feature Importance", command=self.show_importance).grid(column=0, row=6, columnspan=3,sticky=tk.NW)
+
     def test_model_metrics(self,test_model_frame):
         test_model_metrics_frame = ttk.LabelFrame(test_model_frame, text="Test Metrics")
         test_model_metrics_frame.grid(column=1, row=0,padx=8)
@@ -455,16 +487,34 @@ class XGBoost:
     
     def openEntries(self):
         #interval enterence open-close
-        if self.grid_option_var.get() == 0:
-            self.interval_entry["state"] = tk.DISABLED
-            self.gs_cross_entry["state"] = tk.DISABLED
-        elif self.grid_option_var.get() == 1:
-            self.interval_entry["state"] = tk.NORMAL
-            self.gs_cross_entry["state"] = tk.NORMAL
         if self.grid_option_var.get() == 1:
             self.open_for_gridsearch()
+            self.interval_entry["state"] = tk.NORMAL
+            self.gs_cross_entry["state"] = tk.NORMAL
+            self.grid_option_cb1["state"] = tk.NORMAL
+            self.grid_option_cb2["state"] = tk.NORMAL
+            self.grid_option_cb3["state"] = tk.NORMAL
+            self.grid_option_cb4["state"] = tk.NORMAL
+            self.grid_option_cb5["state"] = tk.NORMAL
+            self.grid_option_cb6["state"] = tk.NORMAL
+            self.grid_option_cb7["state"] = tk.NORMAL
+            self.grid_option_cb8["state"] = tk.NORMAL
+            self.grid_option_cb9["state"] = tk.NORMAL
+            self.grid_option_cb10["state"] = tk.NORMAL
         elif self.grid_option_var.get() == 0:
             self.close_for_fixed_params()
+            self.interval_entry["state"] = tk.DISABLED
+            self.gs_cross_entry["state"] = tk.DISABLED
+            self.grid_option_cb1["state"] = tk.DISABLED
+            self.grid_option_cb2["state"] = tk.DISABLED
+            self.grid_option_cb3["state"] = tk.DISABLED
+            self.grid_option_cb4["state"] = tk.DISABLED
+            self.grid_option_cb5["state"] = tk.DISABLED
+            self.grid_option_cb6["state"] = tk.DISABLED
+            self.grid_option_cb7["state"] = tk.DISABLED
+            self.grid_option_cb8["state"] = tk.DISABLED
+            self.grid_option_cb9["state"] = tk.DISABLED
+            self.grid_option_cb10["state"] = tk.DISABLED
 
     def open_for_gridsearch(self):
         for i in self.model_parameters_frame_options:
